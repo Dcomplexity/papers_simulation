@@ -126,12 +126,10 @@ def find_partner(now_position, alpha, now_neighbor, dimension, selected_dimensio
                 for k in range(0, int(y / 2)):
                     positions.append(int(now_position / y) * y + k)
 
-        for i in positions
         position_new = random.sample(positions, 1)[0]
 
         selected_group = dimension[selected_dimension][position_new]
-        if ()
-        selected_partner = random.sample(dimension[selected_dimension][position_new], 1)
+        selected_partner = random.sample(selected_group, 1)[0]
         if selected_partner not in now_neighbor:
             edge_number += 1
             break
@@ -139,8 +137,18 @@ def find_partner(now_position, alpha, now_neighbor, dimension, selected_dimensio
     return selected_partner, edge_number
 
 
-edges = 16000
-for steps in range(edges):
-    selected_individual = random.sample(individual_group, 1)
-    selected_dimension = random.sample(dimension_group, 1)
+total_edges = 16000
+now_edges = 0
+while now_edges < total_edges:
+    selected_individual = random.sample(individual_group, 1)[0]
+    selected_dimension = random.sample(dimension_group, 1)[0]
     selected_indiv_pos = individual_pos[selected_dimension][selected_individual]
+    selected_partner, now_edges = find_partner(selected_indiv_pos, alpha, network[selected_individual], dimension, selected_dimension, now_edges)
+    network[selected_individual].append(selected_partner)
+    network[selected_partner].append(selected_individual)
+
+degree_sum = 0
+for keys in network.keys():
+    degree_sum = degree_sum + len(network[keys])
+
+print (degree_sum)
