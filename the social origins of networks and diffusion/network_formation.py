@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import math
+import networkx as nx
 
 dimension = []
 dimension.append({})
@@ -93,7 +94,7 @@ individual_group = range(3200)
 dimension_group = range(10)
 
 
-def find_partner(now_position, alpha, now_neighbor, dimension, selected_dimension, edge_number):
+def find_partner(now_individual, now_position, alpha, now_neighbor, dimension, selected_dimension, edge_number):
     constant_sum = 0
     for i in range(1, 7):
         constant_sum = constant_sum + math.pow(2, (-alpha) * i)
@@ -130,7 +131,7 @@ def find_partner(now_position, alpha, now_neighbor, dimension, selected_dimensio
 
         selected_group = dimension[selected_dimension][position_new]
         selected_partner = random.sample(selected_group, 1)[0]
-        if selected_partner not in now_neighbor:
+        if selected_partner not in now_neighbor + [now_individual]:
             edge_number += 1
             break
 
@@ -143,12 +144,19 @@ while now_edges < total_edges:
     selected_individual = random.sample(individual_group, 1)[0]
     selected_dimension = random.sample(dimension_group, 1)[0]
     selected_indiv_pos = individual_pos[selected_dimension][selected_individual]
-    selected_partner, now_edges = find_partner(selected_indiv_pos, alpha, network[selected_individual], dimension, selected_dimension, now_edges)
+    selected_partner, now_edges = find_partner(selected_individual, selected_indiv_pos, alpha, network[selected_individual], dimension, selected_dimension, now_edges)
     network[selected_individual].append(selected_partner)
     network[selected_partner].append(selected_individual)
 
-degree_sum = 0
+edges_list= []
 for keys in network.keys():
-    degree_sum = degree_sum + len(network[keys])
+    for item in network[keys]:
+        edges_list.append((keys, item))
+G = nx.Graph()
+G.add_edges_from(edges_list)
 
-print (degree_sum)
+print (nx.is_connected(G))
+print (nx.average_clustering(G))
+print (nx.degree_histogram(G))
+
+nx.write_edgelist(G, "test.txt", data=False)
