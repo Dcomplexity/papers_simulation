@@ -43,20 +43,20 @@ def consolidation_formation(dimension0, beta):  # beta represents consolidation
     probability_sum = []
     temp_sum = 0
     for i in range(len(probability)):
-        temp_sum = temp_sum + probability[i]
+        temp_sum = temp_sum + probability[i]  """account the probability, in order to find the max probability"""
         probability_sum.append(temp_sum)
 
     individuals_0 = {}
     for keys in dimension0.keys():
         for items in dimension0[keys]:
-            individuals_0[items] = keys
+            individuals_0[items] = keys  """record the position(keys) of individuals(items) of dimension0"""
 
-    individuals_con = {}
+    individuals_con = {}     """individuals_con for individuals consolidation"""
     for keys in individuals_0.keys():
-        position_0 = individuals_0[keys]
+        position_0 = individuals_0[keys]   """position_0 means the position of individual in dimension0"""
         p = random.uniform(0, 1)
         distance = 0
-        for i in range(len(probability_sum)):
+        for i in range(len(probability_sum)):   """calculate the distances between different dimensions"""
             if p < probability_sum[i]:
                 distance = i + 1
                 break
@@ -72,8 +72,8 @@ def consolidation_formation(dimension0, beta):  # beta represents consolidation
     return positions_con, individuals_con
 
 
-beta = -1
-alpha = -1
+beta = 2
+alpha = 2
 for i in range(1, 10):
     positions_con = consolidation_formation(dimension[0], beta)[0]
     dimension.append(positions_con)
