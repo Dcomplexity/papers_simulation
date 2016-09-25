@@ -1,4 +1,5 @@
 import numpy as np
+import community
 import random
 import math
 import networkx as nx
@@ -73,8 +74,8 @@ def consolidation_formation(dimension0, beta):  # beta represents consolidation
     return positions_con, individuals_con
 
 
-beta = 2
-alpha = 2
+beta = -1
+alpha = -1
 for i in range(1, 10):     #10 dimensions
     positions_con = consolidation_formation(dimension[0], beta)[0]   #positions_con is typed as a dictionary
     dimension.append(positions_con)  #10 dictionaries
@@ -141,7 +142,7 @@ def find_partner(now_individual, now_position, alpha, now_neighbor, dimension, s
     return selected_partner, edge_number
 
 
-total_edges = 16000
+total_edges = 8000
 now_edges = 0
 while now_edges < total_edges:
     selected_individual = random.sample(individual_group, 1)[0]      #individual_group = range(3200)
@@ -179,9 +180,9 @@ dd = nx.average_clustering(G)
 ddd = nx.average_clustering(RG)
 print (dd / ddd)
 
-g_degree = G.degree()
-print (g_degree)
-total_degree = 0
-for keys in g_degree.keys():
-    total_degree += g_degree[keys]
-print (total_degree)
+partition = community.best_partition(G)
+print (partition)
+
+count = list(set([i for i in partition.values()]))
+print (count)
+print (len(count))
