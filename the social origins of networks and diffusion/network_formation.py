@@ -74,8 +74,8 @@ def consolidation_formation(dimension0, beta):  # beta represents consolidation
     return positions_con, individuals_con
 
 
-beta = -1
-alpha = -1
+beta = 2
+alpha = 2
 for i in range(1, 10):     #10 dimensions
     positions_con = consolidation_formation(dimension[0], beta)[0]   #positions_con is typed as a dictionary
     dimension.append(positions_con)  #10 dictionaries
@@ -142,7 +142,7 @@ def find_partner(now_individual, now_position, alpha, now_neighbor, dimension, s
     return selected_partner, edge_number
 
 
-total_edges = 8000
+total_edges = 80000
 now_edges = 0
 while now_edges < total_edges:
     selected_individual = random.sample(individual_group, 1)[0]      #individual_group = range(3200)
@@ -172,7 +172,7 @@ plt.show()                                                          #显示图�
 
 nx.write_edgelist(G, "test.txt", data=False)
 
-RG = nx.random_graphs.random_regular_graph(10, 3200)
+RG = nx.random_graphs.random_regular_graph(50, 3200)
 
 print (nx.average_clustering(RG))
 
